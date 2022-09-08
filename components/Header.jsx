@@ -7,9 +7,9 @@ import { AiOutlineShopping } from 'react-icons/ai'
 const Header = () => {
   return (
     <div className='w-full h-[100px] z-[99]'>
-      <div className='flex justify-between items-center w-full h-full'>        
-        <div className='flex items-center justify-start gap-3 mx-5 flex-1'>  {/* Logo  */}
-          <Image src={logo} alt='logo' width={50} height={50}/>
+      <div className='flex items-center justify-between w-full h-full'>        
+        <div className='flex items-center justify-start flex-1 gap-3 mx-5'>  {/* Logo  */}
+          <Image src={logo} alt='logo' width={50} height={50} className='rounded-full'/>
           <span className='font-bold text-[1.5rem]'>Fudo</span>
         </div>
         
@@ -30,7 +30,7 @@ const Header = () => {
               </li>
             </Link>
           </ul>
-        <div className='mx-5 flex flex-1 justify-end relative'> {/* Cards */}
+        <div className='relative flex justify-end flex-1 mx-5'> {/* Cards */}
           <AiOutlineShopping size={35} className='text-[#2E2E2E] cursor-pointer '/>
           <div className='absolute bg-[#F54748] text-white rounded-full text-xs w-[20px] h-[20px] text-center flex items-center justify-center top-0 right-[-8px] cursor-pointer'>1</div>
         </div>
