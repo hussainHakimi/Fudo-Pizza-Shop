@@ -6,7 +6,7 @@ import Link from 'next/link'
 const Menu = ({pizzas}) => {
   // console.log(pizzas)
   return (
-    <div className='flex flex-col w-full h-screen mt-[-7rem] items-start justify-center gap-[0.5rem] text-[1.5rem] font-bold'>
+    <div className='flex flex-col w-full h-screen mt-[-7rem] items-start justify-center gap-[0.5rem] text-[1.5rem] font-bold mt-[10rem] mb-[15rem]'>
       <div className='flex flex-col justify-start font-bold'>
         <span className='uppercase text-[#f54748] mb-[2rem]'>our menu</span>
         <span className='text-[2rem]'>Menu That Always</span>
