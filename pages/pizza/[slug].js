@@ -3,12 +3,36 @@ import Image from "next/image";
 import leftArrow from "../../assets/arrowLeft.png";
 import rightArrow from "../../assets/arrowRight.png";
 import { useState } from "react";
+import { useStore } from "../../store/store";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Pizza({ pizza }) {
-  console.log(pizza);
+  // console.log(pizza);
   const src = urlFor(pizza.image).url();
   const [price, setPrice] = useState(`${pizza.price[0]}`);
-  const [count, setCount] = useState(1);
+  const [Quantity, setQuantity] = useState(1);
+  const [Size, setSize] = useState(1);
+  // const [selected, setSelected] = useState();
+
+  // handle Quantity
+  const handleQuantity = (type) => {
+    type === "increment"
+      ? setQuantity((prev) => prev + 1)
+      : Quantity === 1
+      ? null
+      : setQuantity((prev) => prev - 1);
+  };
+  // Add to cart Function
+  const addPizza = useStore((state) => state.addPizza);
+  const addToCart = () => {
+    addPizza({
+      ...pizza,
+      price: pizza.price[Size],
+      quantity: Quantity,
+      size: Size,
+    });
+    toast.success("Added to Cart");
+  };
   return (
     <>
       {/* <div className='flex'> */}
@@ -31,26 +55,32 @@ export default function Pizza({ pizza }) {
             {pizza.details}
           </span>
           <span>
-            <span className="text-[#f54748]">$</span> {price}
+            <span className="text-[#f54748]">$</span> {pizza.price[Size]}
           </span>
           <div className="flex gap-[3rem] text-[1.6rem] font-[600]">
             <span>Size</span>
             <div className="flex gap-[0.6rem] text-[#f54748] font-normal text-[0.8rem] italic">
               <div
-                className="flex items-center justify-center py-[0.3rem] px-[1.5rem] border-2 border-[#f54748] rounded-[2rem] hover:bg-[#f54748] hover:text-white cursor-pointer"
-                onClick={() => setPrice(`${pizza.price[0]}`)}
+                className={`${
+                  Size == 0 ? "bg-[#f54748] text-white cursor-pointer" : ""
+                } flex items-center justify-center py-[0.3rem] px-[1.5rem] border-2 border-[#f54748] rounded-[2rem] hover:bg-[#f54748] hover:text-white cursor-pointer`}
+                onClick={() => setSize(0)}
               >
                 Small
               </div>
               <div
-                className="flex items-center justify-center py-[0.3rem] px-[1.5rem] border-2 border-[#f54748] rounded-[2rem] hover:bg-[#f54748] hover:text-white cursor-pointer"
-                onClick={() => setPrice(`${pizza.price[1]}`)}
+                className={`${
+                  Size == 1 ? "bg-[#f54748] text-white cursor-pointer" : ""
+                } flex items-center justify-center py-[0.3rem] px-[1.5rem] border-2 border-[#f54748] rounded-[2rem] hover:bg-[#f54748] hover:text-white cursor-pointer`}
+                onClick={() => setSize(1)}
               >
                 Medium
               </div>
               <div
-                className="flex items-center justify-center py-[0.3rem] px-[1.5rem] border-2 border-[#f54748] rounded-[2rem] hover:bg-[#f54748] hover:text-white cursor-pointer"
-                onClick={() => setPrice(`${pizza.price[2]}`)}
+                className={`${
+                  Size == 2 ? "bg-[#f54748] text-white cursor-pointer" : ""
+                } flex items-center justify-center py-[0.3rem] px-[1.5rem] border-2 border-[#f54748] rounded-[2rem] hover:bg-[#f54748] hover:text-white cursor-pointer`}
+                onClick={() => setSize(2)}
               >
                 Large
               </div>
@@ -66,14 +96,10 @@ export default function Pizza({ pizza }) {
                 width={20}
                 height={20}
                 objectFit="contain"
-                onClick={() => {
-                  if (count > 1) {
-                    setCount((prev) => prev - 1);
-                  }
-                }}
+                onClick={() => handleQuantity("decrement")}
               />
               <span className="border-2 px-[1rem] text-[1rem] flex items-center justify-center">
-                {count}
+                {Quantity}
               </span>
               <Image
                 src={rightArrow}
@@ -81,19 +107,19 @@ export default function Pizza({ pizza }) {
                 width={20}
                 height={20}
                 objectFit="contain"
-                onClick={() => {
-                  if (count < 100) {
-                    setCount((prev) => prev + 1);
-                  }
-                }}
+                onClick={() => handleQuantity("increment")}
               />
             </div>
           </div>
           {/* Button */}
-          <div className="px-[1rem] py-[0.8rem] bg-[#f54748] hover:cursor-pointer w-[160px] text-[1rem] text-white text-center rounded-[2rem] hover:bg-gray-200 hover:text-[#f54748]">
+          <div
+            className="px-[1rem] py-[0.8rem] bg-[#f54748] hover:cursor-pointer w-[160px] text-[1rem] text-white text-center rounded-[2rem] hover:bg-gray-200 hover:text-[#f54748]"
+            onClick={addToCart}
+          >
             Add to Cart
           </div>
         </div>
+        <Toaster />
       </div>
 
       {/* </div> */}
