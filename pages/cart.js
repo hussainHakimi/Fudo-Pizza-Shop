@@ -86,8 +86,15 @@ export default function Cart() {
           </div>
         </div>
         <div className="flex gap-[1rem]">
-          <button className='bg-transparent py-3 px-6 rounded-full text-[#f54748] border-2 border-[#f54748] text-[0.8rem] p-[0.8rem]'>Pay on Delivery</button>
-          <button className='bg-[#f54748] py-3 px-6 rounded-full text-white text-[0.8rem] p-[0.8rem]'>Pay Now</button>
+          <button
+            className="bg-transparent py-3 px-6 rounded-full text-[#f54748] border-2 border-[#f54748] text-[0.8rem] p-[0.8rem]"
+            onClick={handleOnDelivery}
+          >
+            Pay on Delivery
+          </button>
+          <button className="bg-[#f54748] py-3 px-6 rounded-full text-white text-[0.8rem] p-[0.8rem]">
+            Pay Now
+          </button>
         </div>
       </div>
       <Toaster />
