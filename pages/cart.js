@@ -5,10 +5,14 @@ import { urlFor } from "../lib/client";
 import Pizza from "./pizza/[slug]";
 import toast, { Toaster } from "react-hot-toast";
 import { AiTwotoneAlert } from "react-icons/ai";
+import { useState } from "react";
+import OrderModal from "../components/OrderModal";
 
 export default function Cart() {
   const CartData = useStore((state) => state.cart);
   const removePizza = useStore((state) => state.removePizza);
+  const [PaymentMethod, setPaymentMethod] = useState(null);
+
   const handleRemove = (i) => {
     removePizza(i);
     toast.error("Item Removed");
@@ -16,6 +20,11 @@ export default function Cart() {
 
   const total = () =>
     CartData.pizzas.reduce((a, b) => a + b.quantity * b.price, 0);
+
+  const handleOnDelivery = () => {
+    setPaymentMethod(0);
+    typeof window !== "undefined" && localStorage.setItem("total", total());
+  };
   return (
     <div className={css.conatiner}>
       <div>
@@ -87,7 +96,7 @@ export default function Cart() {
         </div>
         <div className="flex gap-[1rem]">
           <button
-            className="bg-transparent py-3 px-6 rounded-full text-[#f54748] border-2 border-[#f54748] text-[0.8rem] p-[0.8rem]"
+            className="bg-transparent py-3 px-6 rounded-full hover:bg-gray-200  text-[#f54748] border-2 border-[#f54748] text-[0.8rem] p-[0.8rem]"
             onClick={handleOnDelivery}
           >
             Pay on Delivery
@@ -98,6 +107,12 @@ export default function Cart() {
         </div>
       </div>
       <Toaster />
+      {/* Modal */}
+      <OrderModal
+        opened={PaymentMethod === 0}
+        setOpened={setPaymentMethod}
+        PaymentMethod={PaymentMethod}
+      />
     </div>
   );
 }
