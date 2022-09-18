@@ -3,9 +3,11 @@ import { Modal, useMantineTheme } from '@mantine/core';
 import { createOrder } from '../lib/orderHandler';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStore } from '../store/store';
+import { useRouter } from 'next/router';
 
 const OrderModal = ({opened, setOpened, PaymentMethod}) => {
   const theme = useMantineTheme();
+  const router = useRouter()
   const [FormData, setFormData] = useState({})
 
   const handleInput = (e) => {
@@ -22,7 +24,8 @@ const OrderModal = ({opened, setOpened, PaymentMethod}) => {
     {
       typeof window !== 'undefined' && localStorage.setItem('order', id)
     }
-    setOpened(null)
+    router.push(`/order/${id}`)
+    // setOpened(null)
   }
   return (
     <Modal
