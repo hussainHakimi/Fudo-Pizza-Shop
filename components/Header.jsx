@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import logo from '../assets/Logo.png'
 import Link from 'next/link'
 import { AiOutlineShopping } from 'react-icons/ai'
+import { UilReceipt } from '@iconscout/react-unicons'
 import { useStore } from '../store/store'
 
   
@@ -10,7 +11,11 @@ const Header = () => {
   const state = useStore((state) => state)
   // console.log(state)
   const items = useStore((state) => state.cart.pizzas.length)
+  const [Order, setOrder] = useState('')
 
+  useEffect(() => {
+    setOrder(localStorage.getItem('order'))
+  }, [])
 
   return (
     <div className='w-full h-[100px] z-[99]'>
@@ -40,13 +45,25 @@ const Header = () => {
 
         <div className='relative flex justify-end flex-1 mx-5'> {/* Cards */}
           <Link href='/cart'>
-            <div>
+            <div className='relative mr-5'>
               <AiOutlineShopping size={35} className='text-[#2E2E2E] cursor-pointer '/>
               <div className='absolute bg-[#F54748] text-white rounded-full text-xs w-[20px] h-[20px] text-center flex items-center justify-center top-0 right-[-8px] cursor-pointer'>
                 {items}
               </div>
           </div>
           </Link>
+          {Order && (
+            <Link href={`/order/${Order}`}>
+              <div className='relative'>
+                <UilReceipt size={35} className='text-[#2E2E2E] cursor-pointer '/>
+                {Order != "" && 
+                <div className='absolute bg-[#F54748] text-white rounded-full text-xs w-[20px] h-[20px] text-center flex items-center justify-center top-0 right-[-8px] cursor-pointer'
+                  >
+                  1
+                </div>}
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </div>
