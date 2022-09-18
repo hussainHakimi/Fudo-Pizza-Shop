@@ -8,7 +8,7 @@ import { useStore } from '../store/store'
   
 const Header = () => {
   const state = useStore((state) => state)
-  console.log(state)
+  // console.log(state)
   const items = useStore((state) => state.cart.pizzas.length)
 
 
