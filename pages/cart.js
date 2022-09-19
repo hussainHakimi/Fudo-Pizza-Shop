@@ -7,17 +7,22 @@ import toast, { Toaster } from "react-hot-toast";
 import { AiTwotoneAlert } from "react-icons/ai";
 import { useState } from "react";
 import OrderModal from "../components/OrderModal";
+import { useRouter } from "next/router";
 
 export default function Cart() {
   const CartData = useStore((state) => state.cart);
   const removePizza = useStore((state) => state.removePizza);
   const [PaymentMethod, setPaymentMethod] = useState(null);
 
+  const [Order, setOrder] = useState(
+    typeof window !== "undefined" && localStorage.getItem("order")
+  );
+
   const handleRemove = (i) => {
     removePizza(i);
     toast.error("Item Removed");
   };
-
+  const router = useRouter();
   const total = () =>
     CartData.pizzas.reduce((a, b) => a + b.quantity * b.price, 0);
 
@@ -25,6 +30,24 @@ export default function Cart() {
     setPaymentMethod(0);
     typeof window !== "undefined" && localStorage.setItem("total", total());
   };
+
+  const handleCheckout = async () => {
+    typeof window !== "undefined" && localStorage.setItem("total", total());
+    setPaymentMethod(1);
+    const response = await fetch("/api/stripe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application.json",
+      },
+      body: JSON.stringify(CartData.pizzas),
+    });
+
+    if (response.status === 500) return;
+    const data = await response.json();
+    toast.loading("Redirecting...");
+    router.push(data.url);
+  };
+
   return (
     <div className={css.conatiner}>
       <div>
@@ -94,17 +117,23 @@ export default function Cart() {
             <span>$ {total()}</span>
           </div>
         </div>
-        <div className="flex gap-[1rem]">
-          <button
-            className="bg-transparent py-3 px-6 rounded-full hover:bg-gray-200  text-[#f54748] border-2 border-[#f54748] text-[0.8rem] p-[0.8rem]"
-            onClick={handleOnDelivery}
-          >
-            Pay on Delivery
-          </button>
-          <button className="bg-[#f54748] py-3 px-6 rounded-full text-white text-[0.8rem] p-[0.8rem]">
-            Pay Now
-          </button>
-        </div>
+
+        {!Order && CartData.pizzas.length > 0 ? (
+          <div className="flex gap-[1rem]">
+            <button
+              className="bg-transparent py-3 px-6 rounded-full hover:bg-gray-200  text-[#f54748] border-2 border-[#f54748] text-[0.8rem] p-[0.8rem]"
+              onClick={handleOnDelivery}
+            >
+              Pay on Delivery
+            </button>
+            <button
+              className="bg-[#f54748] py-3 px-6 rounded-full text-white text-[0.8rem] p-[0.8rem]"
+              onClick={handleCheckout}
+            >
+              Pay Now
+            </button>
+          </div>
+        ) : null}
       </div>
       <Toaster />
       {/* Modal */}

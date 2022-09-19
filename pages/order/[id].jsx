@@ -66,7 +66,7 @@ export default function Orders({order}) {
           <Image src={Cooking} width={50} height={50} alt="cooking Image" className='text-[#f54748]'/>
           <span>Cooking</span>
           {order.status === 1 && (
-            <div className='absolute left-[-1.1rem] top-[-1.5rem] w-[6rem]'> {/* Spinner */}
+            <div className='absolute left-[-0.95rem] top-[-1.5rem] w-[6rem]'> {/* Spinner */}
               <Image src={Spinner} alt='Spinner' /> 
             </div>
           )}
@@ -78,7 +78,7 @@ export default function Orders({order}) {
           <Image src={Onway} alt='' width={50} height={50}  className='text-[#f54748]'/>
           <span>Onway</span>
           {order.status === 2 && (
-            <div className='absolute left-[-1.1rem] top-[-1.5rem] w-[6rem]'> {/* Spinner */}
+            <div className='absolute left-[-0.95rem] top-[-1.5rem] w-[6rem]'> {/* Spinner */}
               <Image src={Spinner} alt='Spinner' /> 
             </div>
           )}
@@ -90,7 +90,7 @@ export default function Orders({order}) {
           <UilBox width={50} height={50} className='text-[#f54748]'/>
           <span>Delivered</span>
           {order.status === 3 && (
-            <div className='absolute left-[-1.1rem] top-[-1.5rem] w-[6rem]'> {/* Spinner */}
+            <div className='absolute left-[-0.95rem] top-[-1.5rem] w-[6rem]'> {/* Spinner */}
               <Image src={Spinner} alt='Spinner' /> 
             </div>
           )}
